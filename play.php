@@ -25,7 +25,7 @@ var_dump($_SESSION['guessed']);
     <div class="main-container">
         <h2 class="header">Phrase Hunter</h2>
         <?php
-        echo $_SESSION['phrase']->addPhraseToDisplay();
+        echo $_SESSION['phrase']->addPhraseToDisplay($_SESSION['guessed']);
         ?>
         <form action="play.php" class="keyboard" method="POST">
             <?php
@@ -33,9 +33,9 @@ var_dump($_SESSION['guessed']);
             ?>
         </form>
 
-        <!-- <form action="play.php">
-            <input id="btn__reset" type="submit" value="Start Game" />
-        </form> -->
+        <form action="play.php">
+            <input id="btn-start-again" type="submit" value="Restart Game" name="restart" />
+        </form>
     </div>
 
 </body>
