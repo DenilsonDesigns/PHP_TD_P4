@@ -65,6 +65,12 @@ input[type=submit].incorrect {
 input[type=submit].correct {
   background-color: var(--color-win);
 }
+button.correct {
+  background-color: var(--color-win);
+}
+button.incorrect {
+  background-color: var(--color-lose);
+}
 
 #btn__reset {
 	width: 200px;

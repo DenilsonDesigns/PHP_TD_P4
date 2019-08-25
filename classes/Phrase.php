@@ -43,5 +43,10 @@ class Phrase
         }
         return false;
     }
+
+    public function phraseArray()
+    {
+        return str_split($this->current_phrase);
+    }
 }
 ?>

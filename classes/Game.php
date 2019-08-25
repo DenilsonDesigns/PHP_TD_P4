@@ -2,30 +2,49 @@
 class Game
 {
     public $phrase;
-    public $lives;
+    public $lives = 5;
+    public $game_over;
 
     function __construct($phrase)
     {
         $this->phrase = $phrase;
     }
 
-    public function checkForWin()
+    public function checkForWin($guessed, $winners)
     {
-        //this method checks to see if the player 
-        //has selected all of the letters.
+        $filtered_winners = array_filter($winners, function ($element) {
+            return is_string($element) && '' !== trim($element);
+        });
+        $overs = array_diff($filtered_winners, $guessed);
+        if (count($overs) > 0) {
+            return false;
+        }
+
+        $this->game_over = true;
+        return true;
     }
 
-    public function checkForLose()
+    public function checkForLose($num_guesses)
     {
-        // this method checks to see if the player
-        // has guessed too many wrong letters;
+        if ($num_guesses <= 0) {
+            $this->lives = 0;
+            $this->game_over = true;
+            return true;
+        }
+        return false;
     }
 
     public function gameOver()
     {
-        // this method displays one message if the player wins and another
-        // message if they lose. It returns false
-        // if the game has not been won or lost. 
+        if ($this->lives == 0 && $this->game_over == true) {
+            return "You Lose :(";
+        }
+
+        if ($this->lives > 0 && $this->game_over == true) {
+            return "You Win!";
+        }
+
+        return false;
     }
 
     public function displayKeyboard($phrase_letters = [], $guessed_letters = [])
@@ -45,10 +64,14 @@ class Game
             $output_keyboard .= '<div class="keyrow">';
             foreach ($rows as $first) {
                 // if not in guessed letters.
-                if (!in_array($first, $guessed_letters)) {
-                    $output_keyboard .= '<button name="' . $first . '" value="' . $first . '" class="key">' . $first . '</button>';
+                if ($this->phrase->checkLetter($first, $guessed_letters)) {
+                    if ($this->phrase->checkLetter($first, $phrase_letters)) {
+                        $output_keyboard .= '<button name="' . $first . '" value="' . $first . '" class="key correct">' . $first . '</button>';
+                    } else {
+                        $output_keyboard .= '<button name="' . $first . '" value="' . $first . '" class="key incorrect" disabled>' . $first . '</button>';
+                    }
                 } else {
-                    $output_keyboard .= '<button name="' . $first . '" value="' . $first . '" class="key" style="background-color: red" disabled>' . $first . '</button>';
+                    $output_keyboard .= '<button name="' . $first . '" value="' . $first . '" class="key " >' . $first . '</button>';
                 }
                 // if yes in guessed letters:
             }
@@ -58,19 +81,24 @@ class Game
         $output_keyboard .= '</div>';
 
         return $output_keyboard;
-        // Create an onscreen keyboard form. See the example_html/keyboard.txt
-        // file for an example of what the render HTML for the keyboard should
-        // look like. If the letter has been selected the button should be disabled. 
-        // Additionally, the class "correct" or "incorrect" should be added
-        // based on the checkLetter() method of the Phrase object. 
-        // Return a string of HTML for the keyboard form.
     }
 
-    public function displayScore()
+    public function displayScore($guesses_avail)
     {
-        // Display the number of guesses available.
-        // See the example_html/scoreboard.txt file for an example of what the render
-        // HTML for a scoreboard should look like.
-        // Return a string HTML of Scoreboard.
+        $total_hearts = 5;
+        $empty_hearts = $total_hearts - $guesses_avail;
+
+        $output = '<div id="scoreboard" class="section">
+        <ol>';
+
+        for ($i = 0; $i < $guesses_avail; $i++) {
+            $output .= '<li class="tries"><img src="images/liveHeart.png" height="35px" widght="30px"></li>';
+        }
+        for ($i = 0; $i < $empty_hearts; $i++) {
+            $output .= '<li class="tries"><img src="images/lostHeart.png" height="35px" widght="30px"></li>';
+        }
+        $output .= '</ol>
+    </div>';
+        return $output;
     }
 }
