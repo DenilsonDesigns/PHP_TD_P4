@@ -14,7 +14,7 @@ class Phrase
 
     public function addPhraseToDisplay($guessed_letters = [])
     {
-        echo $this->current_phrase;
+        // echo $this->current_phrase;
         $chars = str_split($this->current_phrase);
         $output_string = '<div id="phrase" class="section">
                                                         <ul>';

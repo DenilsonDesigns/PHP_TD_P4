@@ -37,11 +37,11 @@ class Game
     public function gameOver()
     {
         if ($this->lives == 0 && $this->game_over == true) {
-            return "You Lose :(";
+            return "<p class='final-msg'>You Lose :(</p>";
         }
 
         if ($this->lives > 0 && $this->game_over == true) {
-            return "You Win!";
+            return "<p class='final-msg'>You Win!</p>";
         }
 
         return false;
@@ -66,12 +66,12 @@ class Game
                 // if not in guessed letters.
                 if ($this->phrase->checkLetter($first, $guessed_letters)) {
                     if ($this->phrase->checkLetter($first, $phrase_letters)) {
-                        $output_keyboard .= '<button name="' . $first . '" value="' . $first . '" class="key correct">' . $first . '</button>';
+                        $output_keyboard .= '<button id="' . $first . '" name="' . $first . '" value="' . $first . '" class="key correct" disabled>' . $first . '</button>';
                     } else {
-                        $output_keyboard .= '<button name="' . $first . '" value="' . $first . '" class="key incorrect" disabled>' . $first . '</button>';
+                        $output_keyboard .= '<button id="' . $first . '" name="' . $first . '" value="' . $first . '" class="key incorrect" disabled>' . $first . '</button>';
                     }
                 } else {
-                    $output_keyboard .= '<button name="' . $first . '" value="' . $first . '" class="key " >' . $first . '</button>';
+                    $output_keyboard .= '<button id="' . $first . '" name="' . $first . '" value="' . $first . '" class="key " >' . $first . '</button>';
                 }
                 // if yes in guessed letters:
             }
